@@ -1,5 +1,78 @@
-🧠 Análisis y Predicción Socioeconómica - Tasa/Población Ocupada, Desocupación y Subocupación
-📊 Descripción General
+IMPORTANTE 
+deben crear una carpeta con un punto delante  .streamtlit (es la base de los colores y tipo de letras del proyecto)
+que contenga un arhivo llamado 
+config.toml
+con estos datos dentro
+[server]
+enableStaticServing = true
+
+[[theme.fontFaces]]
+family = "Inter"
+url = "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+
+[theme]
+primaryColor = "#FF8C00"
+backgroundColor = "#0D1B2A"
+secondaryBackgroundColor = "#1B263B"
+textColor = "#FFA500"
+linkColor = "#FFA500"
+borderColor = "#CCCCCC"
+showWidgetBorder = true
+baseRadius = "0.5rem"
+buttonRadius = "0.5rem"
+font = "Inter"
+headingFontWeights = [600, 500]
+headingFontSizes = ["2.5rem", "1.8rem"]
+codeFont = "Courier New"
+codeFontSize = "0.75rem"
+codeBackgroundColor = "#112B3C"
+showSidebarBorder = false
+chartCategoricalColors = [
+  "#FF8C00",  # Orange oscuro
+  "#FFA500",  # Naranja clásico
+  "#FFD700",  # Mostaza / dorado
+  "#E1C16E",  # Mostaza claro
+  "#C8E25D",  # Lima suave
+  "#A8D08D",  # Verde pastel
+  "#7AC36A",  # Verde hoja
+  "#4CAF50",  # Verde medio
+  "#40C4FF",  # Celeste vibrante
+  "#00B0F0",  # Celeste profesional
+  "#3399FF",  # Celeste más oscuro
+  "#1E88E5",  # Azul Francia
+  "#1976D2",  # Azul fuerte
+  "#1565C0",  # Azul oscuro
+  "#0D47A1"   # Azul muy profundo
+]
+
+chartCategoricalColors1 = [
+  "#FF8C00",
+  "#FFA500",
+  "#FFB347",
+  "#FFD580",
+  "#FFA07A",
+  "#FF7F50",
+  "#FF6F00",
+  "#CC7000",
+  "#FFC107",
+  "#FFDD57",
+  "#E67E22",
+  "#D35400",
+  "#F39C12",
+  "#E67E22",
+  "#F4A261"
+]
+
+[theme.sidebar]
+backgroundColor = "#1E3A5F"
+secondaryBackgroundColor = "#1B263B"
+headingFontSizes = ["1.6rem", "1.4rem", "1.2rem"]
+dataframeHeaderBackgroundColor = "#1A2A40"
+
+----------------------------------------------------------------------------------------------------
+
+Análisis y Predicción Socioeconómica - Tasa/Población Ocupada, Desocupación y Subocupación
+ Descripción General
 
 Este proyecto permite analizar, modelar y predecir series temporales socioeconómicas relacionadas con el mercado laboral argentino (u otras regiones), utilizando datos trimestrales de empleo, desocupación, subocupación y trabajo informal.
 
@@ -130,5 +203,6 @@ Desarrollado por [Walter Gomez]
 Inspirado en metodologías de análisis fractal aplicado a series socioeconómicas..
 
 Licencia
+
 
 Este proyecto se distribuye bajo licencia MIT, lo que permite su uso, modificación y distribución con atribución.
