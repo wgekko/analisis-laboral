@@ -205,4 +205,12 @@ Inspirado en metodologías de análisis fractal aplicado a series socioeconómic
 Licencia
 
 
+video demo 
+
+https://github.com/user-attachments/assets/c8bdc556-9081-4074-b94a-049f0bcb2c38
+
+
+
+
 Este proyecto se distribuye bajo licencia MIT, lo que permite su uso, modificación y distribución con atribución.
+
