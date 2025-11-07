@@ -1,0 +1,744 @@
+@font-face {
+  font-family: "PPSupplyMono";
+  src: url("https://assets.codepen.io/7558/PPSupplyMono-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* root colors */
+:root{
+  --fg: #ec1291;
+  --bg: #0a0a0a;
+  --accent: #aab7c0;
+  --mono: "PPSupplyMono","Courier New",monospace;
+}
+
+html,body{
+  height:100%;
+  width:100%;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--mono);
+  overflow:hidden;
+}
+
+/* noise overlay */
+body::before{
+  content: "";
+  position: fixed;
+  inset: -50%;
+  background: transparent url("https://assets.codepen.io/7558/noise.png") repeat 0 0;
+  background-size: 300px 300px;
+  animation: noise-animation 0.3s steps(5) infinite;
+  opacity: 0.9;
+  z-index: 100;
+  pointer-events: none;
+}
+
+/* keyframes */
+@keyframes noise-animation { 0%{transform:translate(0,0);} 100%{transform:translate(1%,0);} }
+
+/* background plane (usamos la imagen embebida) */
+.fallback-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("%%BACKGROUND_DATA_URL%%");
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  opacity: 1;
+  transition: opacity 1s ease-out;
+}
+
+/* canvas (three renderer) */
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height:100%;
+  z-index: 1;
+  pointer-events: none;
+  background: transparent;
+}
+
+/* text elements */
+.text-element{
+  position: fixed;
+  z-index: 2;
+  color:var(--fg);  
+  text-transform:uppercase;
+  opacity:1;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 6px rgba(0,0,0,0.6);
+}
+
+
+/* navegación vertical */
+.nav-links {
+  position: fixed;
+  top: 12%;
+  left: 6%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  z-index: 3;
+}
+
+/* estilo base */
+.nav-links a {
+  display: inline-block;
+  text-decoration: none;
+  color: #a8a3ff;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+/* efecto visual suave (glow) */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 1px;
+  background: #ffffffb2;
+  transition: width 0.35s ease;
+  opacity: 0.7;
+}
+
+/* hover: resplandor y subrayado animado */
+.nav-links a:hover {
+  color: #fff;
+  text-shadow: 0 0 6px #fff, 0 0 15px #a8f7ff;
+  transform: translateX(3px);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+  background: #a8f7ff;
+  opacity: 1;
+}
+
+/* el párrafo descriptivo */
+.description {
+  max-width: 600px;
+  margin-top: 50px;
+  text-align: center;
+  color: #0ff;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-shadow: 0 0 8px #0ff;
+}
+
+.description { top: 20%; left:6%; width:38%; font-size:0.85rem; line-height:1.2; }
+.nav-links { top: 12%; left:6%; }
+.nav-links a { display:inline-block; margin-right:1rem; text-decoration:underline; color:#b0a0ff; }
+.footer { bottom:6%; right:6%; font-size:0.7rem; text-align:right; }
+.division { bottom:14%; left:6%; font-size:0.8rem; }
+.signal { top:60%; right:8%; font-size:1rem; transform:translateY(-50%); opacity:0.90; }
+.central-text { top:40%; left:50%; transform: translateX(-50%); width:60%; text-align:center; font-size:1.05rem; }
+
+/* preloader small counter */
+.preloader { position: fixed; top: 6%; left: 3%; z-index: 300; color: rgba(199, 241, 10, 0.781); }
+
+/* responsive small tweaks */
+@media (max-width:768px){
+  .description{ width:80%; left:6%; top:18%; font-size:0.85rem; }
+  .central-text{ width:84%; font-size:0.95rem; top:46%; }
+}
+
+/*text-shadow: 0 0 8px #ff66ff, 0 0 18px #cc00ff;
+background: #ff66ff;
+*/
+
+/* animacion de botones;
+*/
+
+.st-hey-boton button{
+     
+  position: relative;
+    width: 200px;
+    height: 60px;
+    line-height:60px;
+    text-align:center;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    color:#fff;
+    font-size:20px;
+    border:1px solid #fff;
+    border-radius:30px;
+    transition: all 0.5s ease  ;
+}
+.st-key-boton button:before{
+  content:"";
+  position: absolute;
+  background: linear-gradient(to   right,#03a9f4,#f441a5,#ffeb3b,#03a9f4);
+   background-size:400%;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  width: 0%;
+  height: 100%;
+  transition:all 0.6s ease  ;
+  z-index: -1;
+  border-radius:30px;
+}
+.st-hey-boton button:after{
+   content:"";
+   background: linear-gradient(to   right,#03a9f4,#f441a5,#ffeb3b,#03a9f4);
+  background-size:400%;
+  position: absolute;
+  top:-5px;
+  right: -5px;
+  left: -5px;
+  bottom:-5px;
+  z-index: -1;
+  border-radius:40px;
+  filter: blur(20px);
+  opacity: 0;
+  transition:0.5s;
+}
+.st-hey-boton button:hover{
+  border:1px solid transparent;
+}
+.st-key-boton button:hover:before{
+    width: 100%;
+  animation:  a 8s linear Infinite;
+}
+.st-hey-boton button:hover:after{
+    opacity: 1;
+  filter: blur(20px);
+  animation:  a  8s linear Infinite;
+}
+
+
+/* animación de botones streamlit */
+/* animación de botones al pasar el mouse (hover) */
+/* Selector específico para el botón dentro del contenedor personalizado */
+
+.st-key-acceso button {
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+  line-height: 1;
+	border: none;  
+	border-radius: 999px;
+	position: relative;
+	color: white;
+	background: black;
+	isolate: isolate;
+	overflow: clip;
+	z-index: 0;
+	cursor: pointer;
+
+  position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+}
+
+.st-key-acceso button:hover {
+	--after-opacity: 1;
+}
+
+.st-key-acceso button::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -2;
+	border-radius: inherit;
+	background-image: radial-gradient(
+			circle at var(--blue-x, 50%) var(--blue-y, 50%),
+			#18346d 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--purple-x, 50%) var(--purple-y, 50%),
+			purple 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--red-x, 50%) var(--red-y, 50%),
+			red 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--orange-x, 50%) var(--orange-y, 50%),
+			orange 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--green-x, 50%) var(--green-y, 50%),
+			green 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--yellow-x, 50%) var(--yellow-y, 50%),
+			yellow 5%,
+			transparent 30%
+		);
+	background-size: 200% 200%;
+	background-repeat: no-repeat;
+	animation: moveGradients 10s linear infinite;
+}
+
+.st-key-acceso button::after {
+	content: "";
+	position: absolute;
+	inset: 2px;
+	border-radius: inherit;
+	background: black;
+	z-index: -1;
+	backdrop-filter: blur(var(--after-blur, 3px));
+	transition: opacity 500ms ease-in-out;
+	opacity: var(--after-opacity, 0);
+}
+
+/* Animación de fondo */
+@property --blue-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --blue-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --purple-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --purple-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --red-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --red-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --orange-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --orange-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --green-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --green-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --yellow-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --yellow-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+
+@keyframes moveGradients {
+	0%, 100% {
+		--blue-x: -40%; --blue-y: 35%;
+		--purple-x: 35%; --purple-y: -10%;
+		--red-x: -10%; --red-y: -80%;
+		--orange-x: 50%; --orange-y: 145%;
+		--green-x: 0%; --green-y: 80%;
+		--yellow-x: 35%; --yellow-y: 95%;
+	}
+	25% {
+		--blue-x: 30%; --blue-y: -25%;
+		--purple-x: 5%; --purple-y: 40%;
+		--red-x: 45%; --red-y: 150%;
+		--orange-x: -15%; --orange-y: 30%;
+		--green-x: 45%; --green-y: 15%;
+		--yellow-x: -20%; --yellow-y: -40%;
+	}
+	50% {
+		--blue-x: 70%; --blue-y: 50%;
+		--purple-x: 50%; --purple-y: 120%;
+		--red-x: 35%; --red-y: -80%;
+		--orange-x: 75%; --orange-y: -75%;
+		--green-x: 85%; --green-y: 100%;
+		--yellow-x: 50%; --yellow-y: -20%;
+	}
+	75% {
+		--blue-x: -25%; --blue-y: 10%;
+		--purple-x: 35%; --purple-y: -45%;
+		--red-x: -10%; --red-y: 30%;
+		--orange-x: 20%; --orange-y: -40%;
+		--green-x: -15%; --green-y: 50%;
+		--yellow-x: 45%; --yellow-y: -15%;
+	}
+}
+
+
+/* animacion de boton 2
+ */
+
+.st-key-acceso1 button {
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+  line-height: 1;
+	border: none;  
+	border-radius: 999px;
+	position: relative;
+	color: white;
+	background: black;
+	isolate: isolate;
+	overflow: clip;
+	z-index: 0;
+	cursor: pointer;
+
+  position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+}
+
+.st-key-acceso1 button:hover {
+	--after-opacity: 1;
+}
+
+.st-key-acceso1 button::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -2;
+	border-radius: inherit;
+	background-image: radial-gradient(
+			circle at var(--blue-x, 50%) var(--blue-y, 50%),
+			#18346d 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--purple-x, 50%) var(--purple-y, 50%),
+			purple 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--red-x, 50%) var(--red-y, 50%),
+			red 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--orange-x, 50%) var(--orange-y, 50%),
+			orange 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--green-x, 50%) var(--green-y, 50%),
+			green 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--yellow-x, 50%) var(--yellow-y, 50%),
+			yellow 5%,
+			transparent 30%
+		);
+	background-size: 200% 200%;
+	background-repeat: no-repeat;
+	animation: moveGradients 10s linear infinite;
+}
+
+.st-key-acceso1 button::after {
+	content: "";
+	position: absolute;
+	inset: 2px;
+	border-radius: inherit;
+	background: black;
+	z-index: -1;
+	backdrop-filter: blur(var(--after-blur, 3px));
+	transition: opacity 500ms ease-in-out;
+	opacity: var(--after-opacity, 0);
+}
+
+/* Animación de fondo */
+@property --blue-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --blue-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --purple-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --purple-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --red-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --red-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --orange-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --orange-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --green-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --green-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --yellow-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --yellow-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+
+@keyframes moveGradients {
+	0%, 100% {
+		--blue-x: -40%; --blue-y: 35%;
+		--purple-x: 35%; --purple-y: -10%;
+		--red-x: -10%; --red-y: -80%;
+		--orange-x: 50%; --orange-y: 145%;
+		--green-x: 0%; --green-y: 80%;
+		--yellow-x: 35%; --yellow-y: 95%;
+	}
+	25% {
+		--blue-x: 30%; --blue-y: -25%;
+		--purple-x: 5%; --purple-y: 40%;
+		--red-x: 45%; --red-y: 150%;
+		--orange-x: -15%; --orange-y: 30%;
+		--green-x: 45%; --green-y: 15%;
+		--yellow-x: -20%; --yellow-y: -40%;
+	}
+	50% {
+		--blue-x: 70%; --blue-y: 50%;
+		--purple-x: 50%; --purple-y: 120%;
+		--red-x: 35%; --red-y: -80%;
+		--orange-x: 75%; --orange-y: -75%;
+		--green-x: 85%; --green-y: 100%;
+		--yellow-x: 50%; --yellow-y: -20%;
+	}
+	75% {
+		--blue-x: -25%; --blue-y: 10%;
+		--purple-x: 35%; --purple-y: -45%;
+		--red-x: -10%; --red-y: 30%;
+		--orange-x: 20%; --orange-y: -40%;
+		--green-x: -15%; --green-y: 50%;
+		--yellow-x: 45%; --yellow-y: -15%;
+	}
+}
+
+/*animacion de boton 3 */
+
+.st-key-acceso2 button {
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+  line-height: 1;
+	border: none;  
+	border-radius: 999px;
+	position: relative;
+	color: white;
+	background: black;
+	isolate: isolate;
+	overflow: clip;
+	z-index: 0;
+	cursor: pointer;
+
+  position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+}
+
+.st-key-acceso2 button:hover {
+	--after-opacity: 1;
+}
+
+.st-key-acceso2 button::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -2;
+	border-radius: inherit;
+	background-image: radial-gradient(
+			circle at var(--blue-x, 50%) var(--blue-y, 50%),
+			#18346d 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--purple-x, 50%) var(--purple-y, 50%),
+			purple 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--red-x, 50%) var(--red-y, 50%),
+			red 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--orange-x, 50%) var(--orange-y, 50%),
+			orange 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--green-x, 50%) var(--green-y, 50%),
+			green 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--yellow-x, 50%) var(--yellow-y, 50%),
+			yellow 5%,
+			transparent 30%
+		);
+	background-size: 200% 200%;
+	background-repeat: no-repeat;
+	animation: moveGradients 10s linear infinite;
+}
+
+.st-key-acceso2 button::after {
+	content: "";
+	position: absolute;
+	inset: 2px;
+	border-radius: inherit;
+	background: black;
+	z-index: -1;
+	backdrop-filter: blur(var(--after-blur, 3px));
+	transition: opacity 500ms ease-in-out;
+	opacity: var(--after-opacity, 0);
+}
+
+/* Animación de fondo */
+@property --blue-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --blue-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --purple-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --purple-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --red-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --red-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --orange-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --orange-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --green-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --green-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --yellow-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --yellow-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+
+@keyframes moveGradients {
+	0%, 100% {
+		--blue-x: -40%; --blue-y: 35%;
+		--purple-x: 35%; --purple-y: -10%;
+		--red-x: -10%; --red-y: -80%;
+		--orange-x: 50%; --orange-y: 145%;
+		--green-x: 0%; --green-y: 80%;
+		--yellow-x: 35%; --yellow-y: 95%;
+	}
+	25% {
+		--blue-x: 30%; --blue-y: -25%;
+		--purple-x: 5%; --purple-y: 40%;
+		--red-x: 45%; --red-y: 150%;
+		--orange-x: -15%; --orange-y: 30%;
+		--green-x: 45%; --green-y: 15%;
+		--yellow-x: -20%; --yellow-y: -40%;
+	}
+	50% {
+		--blue-x: 70%; --blue-y: 50%;
+		--purple-x: 50%; --purple-y: 120%;
+		--red-x: 35%; --red-y: -80%;
+		--orange-x: 75%; --orange-y: -75%;
+		--green-x: 85%; --green-y: 100%;
+		--yellow-x: 50%; --yellow-y: -20%;
+	}
+	75% {
+		--blue-x: -25%; --blue-y: 10%;
+		--purple-x: 35%; --purple-y: -45%;
+		--red-x: -10%; --red-y: 30%;
+		--orange-x: 20%; --orange-y: -40%;
+		--green-x: -15%; --green-y: 50%;
+		--yellow-x: 45%; --yellow-y: -15%;
+	}
+}
+
+
+/*animacion de boton 3 */
+
+.st-key-acceso3 button {
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+  line-height: 1;
+	border: none;  
+	border-radius: 999px;
+	position: relative;
+	color: white;
+	background: black;
+	isolate: isolate;
+	overflow: clip;
+	z-index: 0;
+	cursor: pointer;
+
+  position: relative;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+}
+
+.st-key-acceso3 button:hover {
+	--after-opacity: 1;
+}
+
+.st-key-acceso3 button::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -2;
+	border-radius: inherit;
+	background-image: radial-gradient(
+			circle at var(--blue-x, 50%) var(--blue-y, 50%),
+			#18346d 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--purple-x, 50%) var(--purple-y, 50%),
+			purple 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--red-x, 50%) var(--red-y, 50%),
+			red 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--orange-x, 50%) var(--orange-y, 50%),
+			orange 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--green-x, 50%) var(--green-y, 50%),
+			green 5%,
+			transparent 30%
+		),
+		radial-gradient(
+			circle at var(--yellow-x, 50%) var(--yellow-y, 50%),
+			yellow 5%,
+			transparent 30%
+		);
+	background-size: 200% 200%;
+	background-repeat: no-repeat;
+	animation: moveGradients 10s linear infinite;
+}
+
+.st-key-acceso3 button::after {
+	content: "";
+	position: absolute;
+	inset: 2px;
+	border-radius: inherit;
+	background: black;
+	z-index: -1;
+	backdrop-filter: blur(var(--after-blur, 3px));
+	transition: opacity 500ms ease-in-out;
+	opacity: var(--after-opacity, 0);
+}
+
+/* Animación de fondo */
+@property --blue-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --blue-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --purple-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --purple-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --red-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --red-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --orange-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --orange-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --green-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --green-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --yellow-x { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+@property --yellow-y { syntax: "<percentage>"; initial-value: 50%; inherits: false; }
+
+@keyframes moveGradients {
+	0%, 100% {
+		--blue-x: -40%; --blue-y: 35%;
+		--purple-x: 35%; --purple-y: -10%;
+		--red-x: -10%; --red-y: -80%;
+		--orange-x: 50%; --orange-y: 145%;
+		--green-x: 0%; --green-y: 80%;
+		--yellow-x: 35%; --yellow-y: 95%;
+	}
+	25% {
+		--blue-x: 30%; --blue-y: -25%;
+		--purple-x: 5%; --purple-y: 40%;
+		--red-x: 45%; --red-y: 150%;
+		--orange-x: -15%; --orange-y: 30%;
+		--green-x: 45%; --green-y: 15%;
+		--yellow-x: -20%; --yellow-y: -40%;
+	}
+	50% {
+		--blue-x: 70%; --blue-y: 50%;
+		--purple-x: 50%; --purple-y: 120%;
+		--red-x: 35%; --red-y: -80%;
+		--orange-x: 75%; --orange-y: -75%;
+		--green-x: 85%; --green-y: 100%;
+		--yellow-x: 50%; --yellow-y: -20%;
+	}
+	75% {
+		--blue-x: -25%; --blue-y: 10%;
+		--purple-x: 35%; --purple-y: -45%;
+		--red-x: -10%; --red-y: 30%;
+		--orange-x: 20%; --orange-y: -40%;
+		--green-x: -15%; --green-y: 50%;
+		--yellow-x: 45%; --yellow-y: -15%;
+	}
+}
